@@ -16,7 +16,10 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded());
-
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    next();
+});
 app.post("/users", (req, res) => {
     console.log(req.body);
 });

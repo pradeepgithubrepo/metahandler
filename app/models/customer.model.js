@@ -1,7 +1,7 @@
 const sql = require("./db.js");
 
 // constructor
-const Customer = function(customer) {
+const Customer = function (customer) {
   this.email = customer.email;
   this.name = customer.name;
   this.active = customer.active;
@@ -40,7 +40,7 @@ Customer.findById = (customerId, result) => {
 };
 
 Customer.getAll = result => {
-  sql.query("SELECT * FROM customers", (err, res) => {
+  sql.query("SELECT * FROM configmap", (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);

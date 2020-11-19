@@ -1,4 +1,4 @@
-const Customer = require("../models/customer.model.js");
+const Config = require("../models/config.model.js");
 
 // Create and Save a new Customer
 exports.create = (req, res) => {
@@ -10,14 +10,14 @@ exports.create = (req, res) => {
     });
   }
 
-  // Create a Customer
-  const customer = new Customer({
+  // Create a Config
+  const config = new Config({
     source: req.body.source,
     metamap: req.body.metamap,
   });
 
-  // Save Customer in the database
-  Customer.create(customer, (err, data) => {
+  // Save Config in the database
+  Config.create(config, (err, data) => {
     if (err)
       res.status(500).send({
         message:
@@ -29,7 +29,7 @@ exports.create = (req, res) => {
 
 // Retrieve all Customers from the database.
 exports.findAll = (req, res) => {
-  Customer.getAll((err, data) => {
+  Config.getAll((err, data) => {
     if (err)
       res.status(500).send({
         message:
@@ -41,15 +41,16 @@ exports.findAll = (req, res) => {
 
 // Find a single Customer with a customerId
 exports.findOne = (req, res) => {
-  Customer.findById(req.params.customerId, (err, data) => {
+  console.log("req.params" + req.params.source)
+  Config.findById(req.params.source, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: `Not found Customer with id ${req.params.customerId}.`
+          message: `Not found Customer with id ${req.params.source}.`
         });
       } else {
         res.status(500).send({
-          message: "Error retrieving Customer with id " + req.params.customerId
+          message: "Error retrieving Customer with id " + req.params.source
         });
       }
     } else res.send(data);
@@ -65,41 +66,36 @@ exports.update = (req, res) => {
     });
   }
 
-  console.log(req.body);
+  // Create a Config
+  const config = new Config({
+    source: req.body.source,
+    metamap: req.body.metamap,
+  });
+  Config.updateById(config, (err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while Updating the Config."
+      });
+    else res.send(data);
+  });
 
-  Customer.updateById(
-    req.params.customerId,
-    new Customer(req.body),
-    (err, data) => {
-      if (err) {
-        if (err.kind === "not_found") {
-          res.status(404).send({
-            message: `Not found Customer with id ${req.params.customerId}.`
-          });
-        } else {
-          res.status(500).send({
-            message: "Error updating Customer with id " + req.params.customerId
-          });
-        }
-      } else res.send(data);
-    }
-  );
 };
 
 // Delete a Customer with the specified customerId in the request
 exports.delete = (req, res) => {
-  Customer.remove(req.params.customerId, (err, data) => {
+  Config.remove(req.params.source, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: `Not found Customer with id ${req.params.customerId}.`
+          message: `Not found ConfigMap with id ${req.params.source}.`
         });
       } else {
         res.status(500).send({
-          message: "Could not delete Customer with id " + req.params.customerId
+          message: "Could not delete ConfigMap with id " + req.params.source
         });
       }
-    } else res.send({ message: `Customer was deleted successfully!` });
+    } else res.send({ message: `ConfigMap was deleted successfully!` });
   });
 };
 

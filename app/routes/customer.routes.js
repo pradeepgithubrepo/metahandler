@@ -1,21 +1,26 @@
 module.exports = app => {
-  const customers = require("../controllers/customer.controller.js");
+  const configs = require("../controllers/customer.controller.js");
+  const metaconfigs = require("../controllers/metaconfig.controller.js");
 
-  // Create a new Customer
-  app.post("/postconfigmap", customers.create);
+  // Create a new Config
+  app.post("/postconfigmap", configs.create);
 
-  // Retrieve all Customers
-  app.get("/getconfigmap", customers.findAll);
+  // Retrieve all Config
+  app.get("/getconfigmap", configs.findAll);
 
-  // Retrieve a single Customer with customerId
-  app.get("/customers/:customerId", customers.findOne);
+  // Retrieve a single Config with sourceID
+  app.get("/getsingleconfig/:source", configs.findOne);
 
-  // Update a Customer with customerId
-  app.put("/customers/:customerId", customers.update);
+  // Update a Config 
+  app.post("/updateConfigmap", configs.update);
 
-  // Delete a Customer with customerId
-  app.delete("/customers/:customerId", customers.delete);
 
-  // Create a new Customer
-  app.delete("/customers", customers.deleteAll);
+  // Retrieve a single Metaconfig with sourceID
+  app.get("/getmetadata/:source", metaconfigs.findOne);
+
+  // // Delete a Customer with customerId
+  app.delete("/delconfigmap/:source", configs.delete);
+
+  // // Create a new Customer
+  // app.delete("/customers", configs.deleteAll);
 };
